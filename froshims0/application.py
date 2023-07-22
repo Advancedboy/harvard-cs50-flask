@@ -1,11 +1,19 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect
 
 app = Flask(__name__)
+
+# registered students
+students = []
 
 
 @app.route('/')
 def index():
     return render_template('index.html')
+
+
+@app.route('/registrants')
+def registrants():
+    return render_template('registered.html', students=students)
 
 
 @app.route('/register', methods=['POST'])
@@ -14,4 +22,5 @@ def register():
     dorm = request.form.get("dorm")
     if not name or not dorm:
         return render_template('failure.html')
-    return render_template('success.html')
+    students.append(f'{name} from {dorm}')
+    return redirect('/registrants')
