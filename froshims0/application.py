@@ -1,26 +1,25 @@
-from flask import Flask, render_template, request, redirect
+import os
+import smtplib
+from flask import Flask, render_template, request
 
+# Configure app
 app = Flask(__name__)
-
-# registered students
-students = []
-
 
 @app.route('/')
 def index():
     return render_template('index.html')
 
 
-@app.route('/registrants')
-def registrants():
-    return render_template('registered.html', students=students)
-
-
 @app.route('/register', methods=['POST'])
 def register():
-    name = request.form.get("name")
-    dorm = request.form.get("dorm")
-    if not name or not dorm:
+    name = request.form.get('name')
+    email = request.form.get('email')
+    dorm = request.form.get('dorm')
+    if not name or not email or not dorm:
         return render_template('failure.html')
-    students.append(f'{name} from {dorm}')
-    return redirect('/registrants')
+    message = 'You are registered!'
+    server = smtplib.SMTP('smtp.gmail.com', 587)
+    server.starttls()
+    server.login('jharvard@cs50.net', os.getenv('PASSWORD'))
+    server.sendmail('jharvard@cs50.net', email, message)
+    return render_template('success.html')
