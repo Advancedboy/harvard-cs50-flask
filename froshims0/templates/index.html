@@ -1,0 +1,15 @@
+{% extends 'layout.html' %}
+
+
+{% block body %}
+    <h1>Register for Frosh IMs</h1>
+    <form action="/register" method="post">
+        <input autocomplete="off" type="text" name="name" placeholder="Name">
+        <select name="dorm" id="">
+            <option disabled selected value="">Dorm</option>
+            <option value="Apley Court">Apley Court</option>
+            <option value="Canaday">Canaday</option>
+        </select>
+        <input type="submit" value="Register">
+    </form>
+{% endblock %}
